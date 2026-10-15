@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Event Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f6fb;
+            color: #222;
+        }
+        header {
+            background: #173b78;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        nav {
+            background: #102b56;
+            padding: 14px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 15px;
+            text-decoration: none;
+        }
+        main {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 15px;
+        }
+        .events {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px #0001;
+        }
+        .card h3 { color: #173b78; }
+        button {
+            background: #173b78;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        input, select {
+            padding: 10px;
+            margin: 7px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        section { margin-bottom: 35px; }
+        footer {
+            background: #102b56;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>College Event Management Portal</h1>
+    <p>Explore, Register and Participate in College Events</p>
+</header>
+
+<nav>
+    <a href="#events">Events</a>
+    <a href="#register">Registration</a>
+    <a href="#status">Status</a>
+</nav>
+
+<main>
+    <section id="events">
+        <h2>Upcoming College Events</h2>
+        <div class="events">
+            <div class="card">
+                <h3>Technical Symposium</h3>
+                <p>Date: 20 November 2026</p>
+                <p>Venue: Main Auditorium</p>
+                <p>Time: 10:00 AM</p>
+            </div>
+            <div class="card">
+                <h3>Hackathon 2026</h3>
+                <p>Date: 25 November 2026</p>
+                <p>Venue: Computer Lab</p>
+                <p>Time: 9:00 AM</p>
+            </div>
+            <div class="card">
+                <h3>Web Development Workshop</h3>
+                <p>Date: 28 November 2026</p>
+                <p>Venue: Seminar Hall</p>
+                <p>Time: 11:00 AM</p>
+            </div>
+            <div class="card">
+                <h3>Cultural Festival</h3>
+                <p>Date: 5 December 2026</p>
+                <p>Venue: Open Ground</p>
+                <p>Time: 4:00 PM</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="register" class="card">
+        <h2>Event Registration</h2>
+        <p>Fill in your details and select an event.</p>
+        <form id="registrationForm">
+            <input id="studentName" placeholder="Student Name" required>
+            <input id="registerNumber" placeholder="Register Number" required>
+            <input id="email" type="email" placeholder="Email Address" required>
+            <select id="eventName" required>
+                <option value="">Select Event</option>
+                <option>Technical Symposium</option>
+                <option>Hackathon 2026</option>
+                <option>Web Development Workshop</option>
+                <option>Cultural Festival</option>
+            </select>
+            <button type="submit">Register Now</button>
+        </form>
+        <p id="message"></p>
+    </section>
+
+    <section id="status" class="card">
+        <h2>Registration Status</h2>
+        <p>Enter your register number to check your registration.</p>
+        <input id="searchNumber" placeholder="Register Number">
+        <button onclick="checkStatus()">Check Status</button>
+        <p id="statusMessage"></p>
+    </section>
+</main>
+
+<footer>
+    College Event Management | DevOps Assessment Project
+</footer>
+
+<script>
+    const registrations = JSON.parse(
+        localStorage.getItem("registrations") || "{}"
+    );
+
+    document.getElementById("registrationForm")
+        .addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById("studentName").value;
+            const number = document.getElementById("registerNumber").value;
+            const event = document.getElementById("eventName").value;
+
+            registrations[number] = { name, event };
+
+            localStorage.setItem(
+                "registrations",
+                JSON.stringify(registrations)
+            );
+
+            document.getElementById("message").textContent =
+                "Registration Successful for " + event;
+
+            this.reset();
+        });
+
+    function checkStatus() {
+        const number = document.getElementById("searchNumber").value;
+        const result = registrations[number];
+
+        document.getElementById("statusMessage").textContent =
+            result
+                ? "Registered: " + result.name + " - " + result.event
+                : "No registration found.";
+    }
+</script>
+
+</body>
+</html>
